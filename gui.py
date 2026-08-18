@@ -76,6 +76,18 @@ def fmt_duration(seconds):
     return f"{m}:{s:02d}"
 
 
+def default_replay_dir():
+    appdata = os.environ.get("APPDATA")
+    if appdata:
+        playback = Path(appdata) / "Relic Entertainment" / "Dawn of War" / "PLAYBACK"
+        if playback.is_dir():
+            return str(playback)
+    downloads = Path.home() / "Downloads"
+    if downloads.is_dir():
+        return str(downloads)
+    return None
+
+
 def make_scrollable_tree(parent, columns, show="headings"):
     container = tk.Frame(parent)
     container.pack(fill="both", expand=True)
@@ -165,7 +177,10 @@ class ReplayApp:
                   foreground=[("selected", "#ffffff")])
 
     def browse(self):
-        path = filedialog.askopenfilename(filetypes=[("DoW replay", "*.rec"), ("All files", "*.*")])
+        path = filedialog.askopenfilename(
+            initialdir=default_replay_dir(),
+            filetypes=[("DoW replay", "*.rec"), ("All files", "*.*")],
+        )
         if path:
             self.load_replay(path)
 
