@@ -1,0 +1,11 @@
+# Generated reports
+*_report/
+map_cache/
+
+# Python
+__pycache__/
+*.pyc
+
+# PyInstaller build output
+build/
+dist/
